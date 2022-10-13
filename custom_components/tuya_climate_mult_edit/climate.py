@@ -195,7 +195,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
         # it to define min, max & step temperatures
         if self._set_temperature:
             self._attr_supported_features |= ClimateEntityFeature.TARGET_TEMPERATURE
-            self._attr_max_temp = self._set_temperature.max_scaled
+            self._attr_max_temp = self._set_temperature.max_scaled * 5
             self._attr_min_temp = self._set_temperature.min_scaled
             self._attr_target_temperature_step = self._set_temperature.step_scaled
 
@@ -342,7 +342,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
                 {
                     "code": self._set_temperature.dpcode,
                     "value": round(
-                        self._set_temperature.scale_value_back(kwargs["temperature"])
+                        self._set_temperature.scale_value_back(kwargs["temperature"] / 5)
                     ),
                 }
             ]
@@ -365,7 +365,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
             # https://developer.tuya.com/en/docs/iot/shift-temperature-scale-follow-the-setting-of-app-account-center?id=Ka9qo7so58efq#title-7-Round%20values
             temperature = temperature / 10
 
-        return self._current_temperature.scale_value(temperature)
+        return self._current_temperature.scale_value(temperature * 5)
 
     @property
     def current_humidity(self) -> int | None:
@@ -389,7 +389,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
         if temperature is None:
             return None
 
-        return self._set_temperature.scale_value(temperature)
+        return self._set_temperature.scale_value(temperature * 5)
 
     @property
     def target_humidity(self) -> int | None:
