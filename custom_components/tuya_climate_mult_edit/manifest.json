@@ -1,7 +1,7 @@
 {
   "domain": "tuya_climate_mult_edit",
   "name": "tuya_climate_mult_edit",
-  "documentation": "https://www.home-assistant.io/integrations/tuya",
+  "documentation": "https://github.com/AlessandroTischer/tuya_climate_mult_edit/",
   "requirements": ["tuya-iot-py-sdk==0.6.6"],
   "dependencies": ["ffmpeg"],
   "codeowners": ["@Tuya", "@zlinoliver", "@frenck"],
