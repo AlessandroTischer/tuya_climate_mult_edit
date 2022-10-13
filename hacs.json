@@ -1,0 +1,5 @@
+{
+  "name": "tuya_climate_mult_edit",
+  "domains": ["tuya_climate_mult_edit"],
+  "render_readme": false,
+}
