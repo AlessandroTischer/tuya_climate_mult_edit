@@ -1,5 +1,5 @@
 {
-  "domain": "tuya_climate_mult_edit",
+  "domain": "Tuya Climate Multiplier Edit",
   "name": "tuya_climate_mult_edit",
   "documentation": "https://github.com/AlessandroTischer/tuya_climate_mult_edit/",
   "requirements": ["tuya-iot-py-sdk==0.6.6"],
