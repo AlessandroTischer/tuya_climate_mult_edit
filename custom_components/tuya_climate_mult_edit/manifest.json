@@ -20,5 +20,6 @@
     { "macaddress": "D4A651*" },
     { "macaddress": "D81F12*" }
   ],
-  "loggers": ["tuya_iot"]
+  "loggers": ["tuya_iot"],
+  "version": "2022.10.3"
 }
