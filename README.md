@@ -1,0 +1,1 @@
+This is a fork of the core Tuya component. Edited some climate.py multipliers in order to make thermostats display correct values.
