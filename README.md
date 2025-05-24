@@ -5,7 +5,7 @@ I also made it possible to use this custom integration alongside the official on
 **In order to use this integration, follow these steps:**
 
 **1.** Add the repository in your [HACS](https://hacs.xyz/):
-/AlessandroTischer/tuya_climate_mult_edit
+https://github.com/AlessandroTischer/tuya_climate_mult_edit.git
 
 ![image](https://github.com/AlessandroTischer/tuya_climate_mult_edit/assets/23379317/0972123a-cccd-4fa2-83a6-448a9c885fb2)
 
