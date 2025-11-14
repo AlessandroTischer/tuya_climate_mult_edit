@@ -220,16 +220,26 @@ class DeviceListener(SharingDeviceListener):
         self, device: CustomerDevice, updated_status_properties: list[str] | None
     ) -> None:
         """Update device status."""
+        # Extract updated status values for the properties that changed
+        updated_status = None
+        if updated_status_properties:
+            updated_status = {
+                prop: self.manager.device_map[device.id].status.get(prop)
+                for prop in updated_status_properties
+            }
+        
         LOGGER.debug(
-            "Received update for device %s: %s (updated properties: %s)",
+            "Received update for device %s: %s (updated properties: %s, values: %s)",
             device.id,
             self.manager.device_map[device.id].status,
             updated_status_properties,
+            updated_status,
         )
         dispatcher_send(
             self.hass,
             f"{TUYA_HA_SIGNAL_UPDATE_ENTITY}_{device.id}",
             updated_status_properties,
+            updated_status,
         )
 
     def add_device(self, device: CustomerDevice) -> None:

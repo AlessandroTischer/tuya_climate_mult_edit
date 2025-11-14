@@ -288,8 +288,16 @@ class TuyaEntity(Entity):
         )
 
     async def _handle_state_update(
-        self, updated_status_properties: list[str] | None
+        self,
+        updated_status_properties: list[str] | None,
+        updated_status: dict[str, Any] | None = None,
     ) -> None:
+        """Handle state update from dispatcher.
+        
+        Args:
+            updated_status_properties: List of property names that were updated
+            updated_status: Dictionary of updated property values
+        """
         self.async_write_ha_state()
 
     def _send_command(self, commands: list[dict[str, Any]]) -> None:
