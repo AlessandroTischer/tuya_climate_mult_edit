@@ -15,6 +15,18 @@
       },
       "scan": {
         "description": "Use Smart Life app or Tuya Smart app to scan the following QR-code to complete the login.\n\nContinue to the next step once you have completed this step in the app."
+      },
+      "temperature_scaling": {
+        "title": "Configure temperature scaling",
+        "description": "Set the scale factors for temperature values. These multipliers are applied to the raw values received from the device.",
+        "data": {
+          "current_temperature_scale": "Current temperature scale factor",
+          "set_temperature_scale": "Set temperature scale factor"
+        },
+        "data_description": {
+          "current_temperature_scale": "Multiplier applied to current temperature values received from the device (default: 1).",
+          "set_temperature_scale": "Multiplier applied to set/target temperature values received from the device (default: 5)."
+        }
       }
     },
     "error": {
@@ -23,6 +35,22 @@
     },
     "abort": {
       "reauth_successful": "[%key:common::config_flow::abort::reauth_successful%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure temperature scaling",
+        "description": "Set the scale factors for temperature values. These multipliers are applied to the raw values received from the device.",
+        "data": {
+          "current_temperature_scale": "Current temperature scale factor",
+          "set_temperature_scale": "Set temperature scale factor"
+        },
+        "data_description": {
+          "current_temperature_scale": "Multiplier applied to current temperature values received from the device (default: 1).",
+          "set_temperature_scale": "Multiplier applied to set/target temperature values received from the device (default: 5)."
+        }
+      }
     }
   },
   "entity": {

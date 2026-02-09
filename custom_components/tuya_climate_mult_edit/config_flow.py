@@ -8,14 +8,24 @@ from typing import Any
 from tuya_sharing import LoginControl
 import voluptuous as vol
 
-from homeassistant.config_entries import SOURCE_REAUTH, ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    ConfigFlowResult,
+    OptionsFlow,
+    SOURCE_REAUTH,
+)
 from homeassistant.helpers import selector
 
 from .const import (
+    CONF_CURRENT_TEMP_SCALE,
     CONF_ENDPOINT,
+    CONF_SET_TEMP_SCALE,
     CONF_TERMINAL_ID,
     CONF_TOKEN_INFO,
     CONF_USER_CODE,
+    DEFAULT_CURRENT_TEMP_SCALE,
+    DEFAULT_SET_TEMP_SCALE,
     DOMAIN,
     TUYA_CLIENT_ID,
     TUYA_RESPONSE_CODE,
@@ -32,6 +42,15 @@ class TuyaConfigFlow(ConfigFlow, domain=DOMAIN):
 
     __user_code: str
     __qr_code: str
+    __entry_data: dict[str, Any]
+    __username: str | None
+
+    @staticmethod
+    def async_get_options_flow(
+        config_entry: ConfigEntry,
+    ) -> TuyaOptionsFlowHandler:
+        """Get the options flow for this handler."""
+        return TuyaOptionsFlowHandler()
 
     def __init__(self) -> None:
         """Initialize the config flow."""
@@ -140,9 +159,39 @@ class TuyaConfigFlow(ConfigFlow, domain=DOMAIN):
                 data=entry_data,
             )
 
-        return self.async_create_entry(
-            title=info.get("username"),
-            data=entry_data,
+        # Store entry data for final step and go to temperature scaling config
+        self.__entry_data = entry_data
+        self.__username = info.get("username")
+        return await self.async_step_temperature_scaling()
+
+    async def async_step_temperature_scaling(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Configure temperature scaling factors."""
+        if user_input is not None:
+            return self.async_create_entry(
+                title=self.__username,
+                data=self.__entry_data,
+                options={
+                    CONF_CURRENT_TEMP_SCALE: user_input[CONF_CURRENT_TEMP_SCALE],
+                    CONF_SET_TEMP_SCALE: user_input[CONF_SET_TEMP_SCALE],
+                },
+            )
+
+        return self.async_show_form(
+            step_id="temperature_scaling",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        CONF_CURRENT_TEMP_SCALE,
+                        default=DEFAULT_CURRENT_TEMP_SCALE,
+                    ): vol.Coerce(float),
+                    vol.Optional(
+                        CONF_SET_TEMP_SCALE,
+                        default=DEFAULT_SET_TEMP_SCALE,
+                    ): vol.Coerce(float),
+                }
+            ),
         )
 
     async def async_step_reauth(
@@ -203,3 +252,34 @@ class TuyaConfigFlow(ConfigFlow, domain=DOMAIN):
             self.__user_code = user_code
             self.__qr_code = response[TUYA_RESPONSE_RESULT][TUYA_RESPONSE_QR_CODE]
         return success, response
+
+
+class TuyaOptionsFlowHandler(OptionsFlow):
+    """Handle Tuya options."""
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Manage the options."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        CONF_CURRENT_TEMP_SCALE,
+                        default=self.config_entry.options.get(
+                            CONF_CURRENT_TEMP_SCALE, DEFAULT_CURRENT_TEMP_SCALE
+                        ),
+                    ): vol.Coerce(float),
+                    vol.Optional(
+                        CONF_SET_TEMP_SCALE,
+                        default=self.config_entry.options.get(
+                            CONF_SET_TEMP_SCALE, DEFAULT_SET_TEMP_SCALE
+                        ),
+                    ): vol.Coerce(float),
+                }
+            ),
+        )
