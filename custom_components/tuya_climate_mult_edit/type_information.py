@@ -172,6 +172,9 @@ class EnumTypeInformation(TypeInformation[str]):
             return None
         # Validate input against defined range
         if raw_value not in self.range:
+            if self.dpcode == "countdown_set" and raw_value in ["4h", "5h", "6h"]:
+                return raw_value
+
             if _should_log_warning(
                 device.id, f"enum_out_range|{self.dpcode}|{raw_value}"
             ):
@@ -194,6 +197,10 @@ class EnumTypeInformation(TypeInformation[str]):
         """Load JSON string and return an EnumTypeInformation object."""
         if not (parsed := json_loads_object(type_data)):
             return None
+        if dpcode == "countdown_set" and "range" in parsed:
+            for val in ["4h", "5h", "6h"]:
+                if val not in parsed["range"]:
+                    parsed["range"].append(val)
         return cls(
             dpcode=dpcode,
             type_data=type_data,
