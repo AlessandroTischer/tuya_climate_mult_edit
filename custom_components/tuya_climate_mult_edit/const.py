@@ -8,20 +8,18 @@ import logging
 
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.const import (
-    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
-    CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER,
-    CONCENTRATION_PARTS_PER_BILLION,
-    CONCENTRATION_PARTS_PER_MILLION,
     LIGHT_LUX,
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     Platform,
+    UnitOfDensity,
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
     UnitOfEnergy,
     UnitOfPower,
     UnitOfPressure,
+    UnitOfRatio,
     UnitOfTemperature,
     UnitOfVolume,
     UnitOfVolumetricFlux,
@@ -1031,14 +1029,14 @@ UNITS = (
         },
     ),
     UnitOfMeasurement(
-        unit=CONCENTRATION_PARTS_PER_MILLION,
+        unit=UnitOfRatio.PARTS_PER_MILLION,
         device_classes={
             SensorDeviceClass.CO,
             SensorDeviceClass.CO2,
         },
     ),
     UnitOfMeasurement(
-        unit=CONCENTRATION_PARTS_PER_BILLION,
+        unit=UnitOfRatio.PARTS_PER_BILLION,
         device_classes={
             SensorDeviceClass.CO,
             SensorDeviceClass.CO2,
@@ -1085,7 +1083,7 @@ UNITS = (
         device_classes={SensorDeviceClass.ILLUMINANCE},
     ),
     UnitOfMeasurement(
-        unit=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        unit=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         # The μ-char has 2 unicode variants \u00b5 and \u03bc
         # The \u03bc variant (Greek Mu char) is recommended
         aliases={"ug/m3", "\u03bcg/m3", "\u00b5g/m3", "ug/m³"},
@@ -1102,7 +1100,7 @@ UNITS = (
         },
     ),
     UnitOfMeasurement(
-        unit=CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER,
+        unit=UnitOfDensity.MILLIGRAMS_PER_CUBIC_METER,
         aliases={"mg/m3"},
         device_classes={
             SensorDeviceClass.NITROGEN_DIOXIDE,

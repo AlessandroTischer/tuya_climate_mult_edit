@@ -488,7 +488,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
         self._swing_wrapper = swing_wrapper
         self._switch_wrapper = switch_wrapper
         self._target_humidity_wrapper = target_humidity_wrapper
-        self._attr_temperature_unit = temperature_unit
+        self._attr_native_temperature_unit = temperature_unit
 
         # Get integer type data for the dpcode to set temperature, use
         # it to define min, max & step temperatures
@@ -578,7 +578,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
         )
 
     @property
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         """Return the current temperature."""
         return self._read_wrapper(self._current_temperature)
 
@@ -588,7 +588,7 @@ class TuyaClimateEntity(TuyaEntity, ClimateEntity):
         return self._read_wrapper(self._current_humidity_wrapper)
 
     @property
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         """Return the temperature currently set to be reached."""
         return self._read_wrapper(self._set_temperature)
 
